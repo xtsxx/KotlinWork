@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var et_password: EditText
     private lateinit var et_code: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val code_view = findViewById<CodeView>(R.id.code_view)
         btn_login.setOnClickListener(this)
         code_view.setOnClickListener(this)
+
+
     }
 
     override fun onClick(view: View) {
@@ -49,22 +52,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val username = et_username.text.toString()
         val password = et_password.text.toString()
         val code = et_code.text.toString()
-
         val user = User(username, password, code)
         if (verify(user)) {
             CacheUtils.save(usernameKey, username)
             CacheUtils.save(passwordKey, password)
-            startActivity(Intent(this,LessonActivity::class.java))
+            startActivity(Intent(this, LessonActivity::class.java))
         }
     }
 
     private fun verify(user: User): Boolean {
-        if (user.userName.length < 4) {
+        if (user.userName?.length ?: 0 < 4) {
             Utils.toast("用户名不合法")
             return false
         }
 
-        if (user.password.length < 4) {
+        if (user.password?.length ?: 0 < 4) {
             Utils.toast("密码不合法")
             return false
         }
